@@ -1,8 +1,113 @@
 <!--The content below is only a placeholder and can be replaced.-->
+<link rel="stylesheet" href="https://js.arcgis.com/4.6/esri/css/main.css">
+<script src="https://js.arcgis.com/4.6/"></script>
+<script>
+
+  // Hard coded for testing purposes only
+  // 45.564999, 18.619640  
+  
+  /*
+  lat = 45.56;  
+  long = 18.61;  
+  */
+  
+  require([
+        "esri/Map",
+        "esri/PopupTemplate",
+        "esri/views/MapView",
+        "esri/Graphic",
+        "esri/geometry/Polyline",
+        "esri/geometry/support/webMercatorUtils",
+        "esri/symbols/SimpleMarkerSymbol",
+        "esri/symbols/SimpleLineSymbol",
+        "esri/symbols/SimpleFillSymbol",
+        "dojo/domReady!"
+      ], function(
+        Map, PopupTemplate, MapView,
+        Graphic, Polyline, webMercatorUtils,
+        SimpleMarkerSymbol, SimpleLineSymbol, SimpleFillSymbol
+      ) {
+  
+        var map = new Map({
+          basemap: "hybrid"
+        });
+  
+        var view = new MapView({
+          center: [18.6196, 45.5650],
+          container: "viewDiv",
+          map: map,
+          zoom: 17
+        });
+  
+        /*************************
+         * Create a polyline graphic
+         *************************/
+  
+        // First create a line geometry (this is the Keystone pipeline)
+        var polylineLatLong = new Polyline({
+          paths: [
+            [18.6196, 45.5650],
+            [18.6198, 45.5658],
+            [18.6214, 45.5657],
+            [18.6260, 45.5650],
+            [18.6273, 45.5645]
+          ]
+        });
+  
+        var webMercatorPolyline = webMercatorUtils.geographicToWebMercator(polylineLatLong);
+        
+        // Create a symbol for drawing the line
+        var lineSymbol = new SimpleLineSymbol({
+          color: [226, 119, 40],
+          width: 4
+        });
+  
+        // Create an object for storing attributes related to the line
+        var lineAtt = {
+          Name: "Keystone Pipeline",
+          Owner: "TransCanada",
+          Length: "3,456 km"
+        };
+  
+        /*******************************************
+         * Create a new graphic and add the geometry,
+         * symbol, and attributes to it. You may also
+         * add a simple PopupTemplate to the graphic.
+         * This allows users to view the graphic's
+         * attributes when it is clicked.
+         ******************************************/
+        var polylineGraphic = new Graphic({
+          geometry: webMercatorPolyline,
+          symbol: lineSymbol,
+          attributes: lineAtt,
+          popupTemplate: new PopupTemplate({
+            title: "{Name}",
+            content: "{*}"
+          })
+        });
+  
+        // Add the graphics to the view's graphics layer
+        view.graphics.addMany([polylineGraphic]);
+      });
+  
+  
+  </script>
+  <style>
+    html,
+   body,
+   #viewDiv {
+     padding: 0;
+     margin: 0;
+     height: 100%;
+     width: 100%;
+   }
+
+</style>
 <div style="text-align:center">
   <h1>
-    Welcome to {{ title }}!
+    Welcome to my {{ title }}!
   </h1>
+  <div id="viewDiv"></div>
   <app-coordinate></app-coordinate>
 </div>
 

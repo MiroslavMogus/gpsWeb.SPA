@@ -5,10 +5,29 @@
   <title>GpsWeb.SPA</title>
   <base href="/">
 
+
+  <link rel="stylesheet" href="https://js.arcgis.com/4.6/esri/css/main.css">
+  <script src="https://js.arcgis.com/4.6/"></script>
+    <script src="assets/js/arcgismap.js"></script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
+  
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
+<style>
+     html,
+    body,
+    #viewDiv {
+      padding: 0;
+      margin: 0;
+      height: 70%;
+      width: 70%;
+    }
+
+</style>
 </head>
 <body>
+  <div id="viewDiv"></div>
   <app-root></app-root>
 </body>
 </html>
